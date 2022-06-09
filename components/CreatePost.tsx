@@ -12,7 +12,17 @@ function CreatePost() {
             return
         }
 
-        // TODO: post
+        const response = await fetch('/api/post', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({content: content})
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error on publishing post: ${response.status}`);
+        }
 
         setContent('');
         setContentLength(0);
