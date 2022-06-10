@@ -4,11 +4,7 @@ import {ethers} from 'ethers';
 
 import PostContract from '../contracts/PostStorage.json';
 
-interface CreatePostProps {
-    getPosts: () => Promise<void>
-}
-
-function CreatePost({getPosts}: CreatePostProps) {
+function CreatePost() {
     const contentMaxLength = 140;
     const [content, setContent] = useState('');
     const [contentLength, setContentLength] = useState(0);
@@ -68,7 +64,6 @@ function CreatePost({getPosts}: CreatePostProps) {
 
         setContent('');
         setContentLength(0);
-        await getPosts();
     }
 
     const countContentLength = async (event: FormEvent<HTMLTextAreaElement>) => {

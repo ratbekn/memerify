@@ -58,12 +58,19 @@ function Feed() {
     }, []);
 
     useEffect(() => {
+        const id = setInterval(() => {
+            console.log('getPosts called');
+            return getPosts();
+        }, 15000);
+
         getPosts();
+
+        return () => clearInterval(id);
     }, [getPosts]);
 
     return (
         <div>
-            <CreatePost getPosts={getPosts}/>
+            <CreatePost />
             {
                 posts.map((post, index) =>
                     <Post key={post.id} username={post.username} content={post.content}/>
