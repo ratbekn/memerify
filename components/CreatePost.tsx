@@ -1,9 +1,47 @@
 import {FormEvent, useState} from 'react';
 
-function CreatePost() {
+import {ethers} from 'ethers';
+
+import PostContract from '../contracts/PostStorage.json';
+
+interface CreatePostProps {
+    getPosts: () => Promise<void>
+}
+
+function CreatePost({getPosts}: CreatePostProps) {
     const contentMaxLength = 140;
     const [content, setContent] = useState('');
     const [contentLength, setContentLength] = useState(0);
+
+    const addPost = async (hash: string) => {
+        let post = {
+            'content': hash,
+            'isDeleted': false
+        };
+
+        try {
+            // @ts-ignore
+            const {ethereum} = window;
+
+            if(ethereum) {
+                const provider = new ethers.providers.Web3Provider(ethereum);
+                const signer = provider.getSigner();
+                const postContract = new ethers.Contract(
+                    '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
+                    PostContract.abi,
+                    signer
+                )
+
+                let addTransaction = await postContract.addPost(post.content, post.isDeleted);
+
+                console.log(addTransaction);
+            } else {
+                console.log("Can't find Ethereum object. Check if MetaMask installed or try using another browser");
+            }
+        } catch(error) {
+            console.log('Error adding post metadata to blockchain', error);
+        }
+    }
 
     const publish = async (event: any) => {
         event.preventDefault();
@@ -24,8 +62,13 @@ function CreatePost() {
             throw new Error(`Error on publishing post: ${response.status}`);
         }
 
+        const { hash } = await response.json();
+
+        await addPost(hash);
+
         setContent('');
         setContentLength(0);
+        await getPosts();
     }
 
     const countContentLength = async (event: FormEvent<HTMLTextAreaElement>) => {
