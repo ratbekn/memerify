@@ -1,4 +1,8 @@
-function Header() {
+interface HeaderProps {
+    username: string
+}
+
+function Header({username}: HeaderProps) {
     return (
         <div className="flex-[2]
                         border-r
@@ -19,10 +23,7 @@ function Header() {
                 </div>
                 <div className="">
                     <div>
-                        ratbek
-                    </div>
-                    <div>
-                        0xa559ee4ce4a6b43a568ef92e90b6fbc380c199850281e956d8b8100256357cd5
+                        {username}
                     </div>
                 </div>
             </div>
