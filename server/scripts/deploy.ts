@@ -27,13 +27,6 @@ async function main() {
   await postStorage.deployed();
 
   console.log("PostStorage deployed to:", postStorage.address);
-
-  const UserStorage = await ethers.getContractFactory("UserStorage");
-  const userStorage = await UserStorage.deploy();
-
-  await userStorage.deployed();
-
-  console.log("UserStorage deployed to:", userStorage.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

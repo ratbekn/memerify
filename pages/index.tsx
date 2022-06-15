@@ -2,7 +2,7 @@ import {ethers} from 'ethers';
 
 import type { NextPage } from 'next'
 
-import UserContract from '../contracts/UserStorage.json';
+import PostContract from '../contracts/PostStorage.json';
 import Feed from '../components/Feed'
 import Header from '../components/Header'
 import {useState} from 'react';
@@ -26,16 +26,16 @@ const Home: NextPage = () => {
 
             const provider = new ethers.providers.Web3Provider(ethereum);
             const signer = provider.getSigner();
-            const userContract = new ethers.Contract(
-                '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
-                UserContract.abi,
+            const contract = new ethers.Contract(
+                '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
+                PostContract.abi,
                 signer
             )
 
-            const isUserExist = await userContract.isUserExist();
+            const isUserExist = await contract.isUserExist();
             console.log(isUserExist);
             if (!isUserExist) {
-                const addUserTransaction = await userContract.addUser();
+                const addUserTransaction = await contract.addUser();
 
                 console.log('add user transaction', addUserTransaction);
             }
