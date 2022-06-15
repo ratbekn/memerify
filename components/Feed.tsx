@@ -61,7 +61,7 @@ function Feed() {
         const id = setInterval(() => {
             console.log('getPosts called');
             return getPosts();
-        }, 15000);
+        }, 5000);
 
         getPosts();
 
