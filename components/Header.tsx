@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 interface HeaderProps {
     username: string
 }
@@ -17,11 +19,16 @@ function Header({username}: HeaderProps) {
                             flex
                             justify-between
                             items-center">
-                <div className="text-xl
-                                font-bold">
-                    Home
+                <div className="flex-1 flex gap-1">
+                    <Link className="text-xl
+                                font-bold mr-2" href="/">
+                        Home
+                    </Link>
+                    <Link className="text-xl font-bold" href="/users">
+                        Users
+                    </Link>
                 </div>
-                <div className="">
+                <div className="flex-3">
                     <div>
                         {username}
                     </div>

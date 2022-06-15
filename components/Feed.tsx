@@ -33,7 +33,7 @@ function Feed() {
                 signer
             );
 
-            const allPosts = (await postContract.getPosts());
+            const allPosts = await postContract.getPosts();
 
             let newPosts: Post[] = [];
             for (const newPost of allPosts) {

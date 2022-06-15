@@ -13,7 +13,7 @@ const Home: NextPage = () => {
     const connectWallet = async () => {
         try {
             // @ts-ignore
-            const { ethereum } = window
+            const { ethereum } = window;
 
             if (!ethereum) {
                 console.log('Metamask not detected')
@@ -32,7 +32,9 @@ const Home: NextPage = () => {
                 signer
             )
 
-            if (!userContract.isUserExist()) {
+            const isUserExist = await userContract.isUserExist();
+            console.log(isUserExist);
+            if (!isUserExist) {
                 const addUserTransaction = await userContract.addUser();
 
                 console.log('add user transaction', addUserTransaction);
