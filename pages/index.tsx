@@ -1,7 +1,8 @@
+import {ethers} from 'ethers';
+
 import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+
+import UserContract from '../contracts/UserStorage.json';
 import Feed from '../components/Feed'
 import Header from '../components/Header'
 import {useState} from 'react';
@@ -22,6 +23,20 @@ const Home: NextPage = () => {
             console.log('Connected to chain:' + chainId)
 
             const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
+
+            const provider = new ethers.providers.Web3Provider(ethereum);
+            const signer = provider.getSigner();
+            const userContract = new ethers.Contract(
+                '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
+                UserContract.abi,
+                signer
+            )
+
+            if (!userContract.isUserExist()) {
+                const addUserTransaction = await userContract.addUser();
+
+                console.log('add user transaction', addUserTransaction);
+            }
 
             console.log('Found account', accounts[0])
             setCurrentAccount(accounts[0])
