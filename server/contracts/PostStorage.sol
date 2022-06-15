@@ -22,7 +22,7 @@ contract PostStorage {
         Post[] memory temporary = new Post[](posts.length);
         uint counter = 0;
         for (uint i = 0; i < posts.length; i++) {
-            if (posts[i].isDeleted == false) {
+            if (posts[i].isDeleted == false && subscriptions[msg.sender][posts[i].username]) {
                 temporary[counter] = posts[i];
                 counter++;
             }
@@ -47,6 +47,7 @@ contract PostStorage {
         if (users[msg.sender].exist != true) {
             users[msg.sender] = User(msg.sender, true);
             usernames.push(msg.sender);
+            subscriptions[msg.sender][msg.sender] = true;
         }
     }
 
@@ -56,5 +57,19 @@ contract PostStorage {
 
     function getUsers() external view returns(address[] memory) {
         return usernames;
+    }
+
+    mapping(address => mapping(address => bool)) subscriptions;
+
+    function subscribe(address username) external {
+        subscriptions[msg.sender][username] = true;
+    }
+
+    function unsubscribe(address username) external {
+        subscriptions[msg.sender][username] = false;
+    }
+
+    function isSubscribed(address username) external view returns(bool) {
+        return subscriptions[msg.sender][username];
     }
 }
